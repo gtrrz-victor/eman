@@ -1,4 +1,3 @@
----
 name: [confirm-attendance] Build and Deploy to S3/CloudFront
 on:
   push:
