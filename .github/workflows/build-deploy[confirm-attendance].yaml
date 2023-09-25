@@ -1,0 +1,56 @@
+---
+name: [confirm-attendance] Build and Deploy to S3/CloudFront
+on:
+  push:
+    paths: 
+      - 'apps/confirm-attendance/**'
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      BUCKET: evento.gtrrzvictor.com
+      DIST: apps/confirm-attendance/dist
+      REGION: eu-west-2
+      DIST_ID: E3I64Q8DIXTI2S
+
+    steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.REGION }}
+    
+
+    - name: Check out code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.32.2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install -F confirm-attendance
+
+    - name: Build
+      run: pnpm build -F confirm-attendance
+
+    - name: Copy files to the production website with the AWS CLI
+      run: |
+        aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+
+    - name: Copy files to the production website with the AWS CLI
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ env.DIST_ID }} \
+          --paths "/*"
