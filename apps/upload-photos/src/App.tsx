@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
+const API_ENDPOINT = 'https://5k4jwtt478.execute-api.eu-west-2.amazonaws.com/uploads'
+
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -35,8 +37,33 @@ function App() {
   const handleMovePrev = () => setIndex(prevIndex);
   const handleMoveNext = () => setIndex(nextIndex);
 
-  const uploadPhotos = () => {
+  const uploadPhotos = async () => {
     setUploading(true)
+    try {
+      for (let index = 0; index < images.length; index++) {
+        const image = images[index];
+        if (!image) throw new Error('Photo not found')
+        const response = await fetch(
+          API_ENDPOINT,
+          {
+            method: 'GET'
+          })
+        const { uploadURL } = await response.json()
+        console.log('Response: ', response)
+        console.log('Uploading to: ', uploadURL)
+        const result = await fetch(uploadURL, {
+          method: 'PUT',
+          body: image
+        })
+        console.log('Result: ', result)
+
+      }
+      alert('Done!')
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUploading(false)
+    }
   }
 
   useEffect(() => {
@@ -57,7 +84,7 @@ function App() {
           }
         })
       }))
-      setPhotos([...photos, ...newphotos])
+      setPhotos([...newphotos])
     }
     if (images.length < 1) return
     upload()
