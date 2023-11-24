@@ -108,11 +108,12 @@ export function App() {
                         alignItems="start"
                     >
                         <p>Hola {guest.name}!!</p>
-                        <p>Como ya te habremos comentado por Whatsapp.. </p>
+                        <p>Como ya te habremos comentado por Whatsapp.</p>
                         <p>
                             Contamos contigo para la merendola que estamos organizando para el
-                            28 de Diciembre 2023
+                            Jueves 28 de Diciembre 2023 en Cafe del Rio de 7 a 10 de la tarde.
                         </p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12150.544101613896!2d-3.7232444!3d40.4169133!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42280b5167a5ed%3A0x4823b391a4d43c3e!2sRiver%20Caf%C3%A9!5e0!3m2!1sen!2sau!4v1700793881238!5m2!1sen!2sau" width="100%" height="450" allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade" style={{ border: 0 }}></iframe>
                         <p>Solo necesitamos tu confirmacion</p>
                         <span>
                             Podras venir?{" "}
@@ -216,6 +217,7 @@ export function App() {
                     >
                         <h2>Muchas gracias!!</h2>
                         <h2>Te estaremos esperando!</h2>
+                        <Button target="_blank" variant="outlined" href="https://www.addevent.com/event/NL19421027">Recuerdame!</Button>
                         <img
                             style={{
                                 border: "1px solid #ddd",
