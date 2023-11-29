@@ -10,10 +10,14 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3WNSGVR41"></script>
   <script>
+    const params = new URLSearchParams(location.search);
+    const guess_id = params.get("id");
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-H3WNSGVR41');
+    gtag('config', 'G-H3WNSGVR41', {
+      guess_id
+    });
   </script>
 </head>
 

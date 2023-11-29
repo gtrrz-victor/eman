@@ -17,6 +17,12 @@ import { useQuery } from "react-query";
 import { readGuest } from "./api/readGuest";
 import { updateGuest } from "./api/updateGuest";
 
+declare global {
+    interface Window {
+        gtag: (arg1: string, arg2: string, opts: any) => void;
+    }
+}
+
 export function App() {
     const guestId = useMemo(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -48,6 +54,9 @@ export function App() {
                 address: hideAddress ? "" : address,
             });
             setHasBeenSent(true);
+            window.gtag('event', 'data_sent', {
+                assisting
+            })
         } catch (err) {
             console.error(err);
         }
@@ -215,47 +224,71 @@ export function App() {
                         flexDirection="column"
                         alignItems="center"
                     >
-                        <h2>Muchas gracias!!</h2>
-                        <h2>Te estaremos esperando!</h2>
-                        <Button target="_blank" variant="outlined" href="https://www.addevent.com/event/NL19421027">Recuerdame!</Button>
-                        <img
-                            style={{
-                                border: "1px solid #ddd",
-                                borderRadius: "4px",
-                                padding: "5px",
-                                maxWidth: "90vh",
-                                height: "auto",
-                            }}
-                            src="/assets/we_are_ready.jpg"
-                            alt="We are ready!"
-                            loading="lazy" />
-                        <h2>Que sepas que...</h2>
-                        <h2>Ya estamos plantando la cena!</h2>
-                        <img
-                            style={{
-                                border: "1px solid #ddd",
-                                borderRadius: "4px",
-                                padding: "5px",
-                                maxWidth: "100%",
-                                height: "auto",
-                            }}
-                            src="/assets/fresh_product.jpg"
-                            alt="Getting the product ready!"
-                            loading="lazy" />
+                        {
+                            assisting && (
+                                <>
+                                    <h2>Muchas gracias!!</h2>
+                                    <h2>Te estaremos esperando!</h2>
+                                    <Button target="_blank" variant="outlined" href="https://www.addevent.com/event/NL19421027">Recuerdame!</Button>
+                                    <img
+                                        style={{
+                                            border: "1px solid #ddd",
+                                            borderRadius: "4px",
+                                            padding: "5px",
+                                            maxWidth: "90vh",
+                                            height: "auto",
+                                        }}
+                                        src="/assets/we_are_ready.jpg"
+                                        alt="We are ready!"
+                                        loading="lazy" />
+                                    <h2>Que sepas que...</h2>
+                                    <h2>Ya estamos plantando la cena!</h2>
+                                    <img
+                                        style={{
+                                            border: "1px solid #ddd",
+                                            borderRadius: "4px",
+                                            padding: "5px",
+                                            maxWidth: "100%",
+                                            height: "auto",
+                                        }}
+                                        src="/assets/fresh_product.jpg"
+                                        alt="Getting the product ready!"
+                                        loading="lazy" />
 
-                        <h2>Y no, no te preocupes...</h2>
-                        <h2>que no pasaras hambre</h2>
-                        <img
-                            style={{
-                                border: "1px solid #ddd",
-                                borderRadius: "4px",
-                                padding: "5px",
-                                maxWidth: "100%",
-                                height: "auto",
-                            }}
-                            src="/assets/hungry.jpg"
-                            alt="No empty tummy!"
-                            loading="lazy" />
+                                    <h2>Y no, no te preocupes...</h2>
+                                    <h2>que no pasaras hambre</h2>
+                                    <img
+                                        style={{
+                                            border: "1px solid #ddd",
+                                            borderRadius: "4px",
+                                            padding: "5px",
+                                            maxWidth: "100%",
+                                            height: "auto",
+                                        }}
+                                        src="/assets/hungry.jpg"
+                                        alt="No empty tummy!"
+                                        loading="lazy" />
+                                </>
+                            )
+                        }{
+                            !assisting && (
+                                <>
+                                    <h2>Es una pena, pero nos veremos de todas formas!</h2>
+                                    <img
+                                        style={{
+                                            border: "1px solid #ddd",
+                                            borderRadius: "4px",
+                                            padding: "5px",
+                                            maxWidth: "90vh",
+                                            height: "auto",
+                                        }}
+                                        src="/assets/we_are_ready.jpg"
+                                        alt="We are ready!"
+                                        loading="lazy" />
+                                </>
+                            )
+                        }
+
                     </Box>
 
                 </Container>
