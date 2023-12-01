@@ -21,12 +21,11 @@ export async function fetchPeople(options?: FetchOptions): Promise<Query> {
   if (options?.devMode) {
     cachedResponse = MOCK_DATA
   }
-  // if (options?.invalidateCache || cachedResponse === undefined) {
-  //   const response = await dynamoClient.send(command);
-  //   cachedResponse = response as unknown as Query
-  // }
-  // return cachedResponse
-  return (await dynamoClient.send(command)) as unknown as Query;
+  if (options?.invalidateCache || cachedResponse === undefined) {
+    const response = await dynamoClient.send(command);
+    cachedResponse = response as unknown as Query
+  }
+  return cachedResponse
 }
 
 export async function sendNotification(identifier: string, topic: Notification = 'Invitation') {
@@ -60,6 +59,7 @@ export async function sendNotification(identifier: string, topic: Notification =
     }
   })
   await dynamoClient.send(updateUserCommand)
+  await fetchPeople({ invalidateCache: true })
 }
 
 const MOCK_DATA = {
