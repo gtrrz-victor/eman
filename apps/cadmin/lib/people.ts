@@ -59,7 +59,6 @@ export async function sendNotification(identifier: string, topic: Notification =
     }
   })
   await dynamoClient.send(updateUserCommand)
-  await fetchPeople({ invalidateCache: true })
 }
 
 const MOCK_DATA = {
