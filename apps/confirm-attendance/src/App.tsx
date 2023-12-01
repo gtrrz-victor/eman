@@ -144,11 +144,19 @@ export function App() {
                         <Fade in={assisting} unmountOnExit>
                             <div>
                                 <span>
-                                    No se si lo sabras, pero tambien hemos invitado a:
-                                    <ul>
-                                        {guest.relatives.map((name, index) => (<li key={index}>{name}</li>))}
-                                    </ul>
-                                    Vendras acompa&ntilde;ado/a con alguien mas a parte de la gente que ya hemos invitado?{" "}
+                                    {
+                                        !guest.relatives?.length &&
+                                        (<> Vendras acompa&ntilde;ado/a con alguien mas?</>)
+
+                                    }
+                                    {guest.relatives?.length > 0 && (
+                                        <>No se si lo sabras, pero tambien hemos invitado a:
+                                            <ul>
+                                                {guest.relatives.map((name, index) => (<li key={index}>{name}</li>))}
+                                            </ul>
+                                            Vendras acompa&ntilde;ado/a con alguien mas a parte de la gente que ya hemos invitado?{" "}
+                                        </>
+                                    )}
                                     <RadioGroup
                                         row
                                         value={more ?? ""}
